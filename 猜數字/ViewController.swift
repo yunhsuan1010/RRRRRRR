@@ -8,49 +8,80 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController
+{
+    
+    //輸入
     @IBOutlet weak var putin: UITextField!
+    
+    //提示
     @IBOutlet weak var hint: UILabel!
+    
+    //猜測次數
     @IBOutlet weak var time: UILabel!
+    
+    //花花
     @IBOutlet weak var flower: UIImageView!
+    
+    //眼淚ＱＱ
     @IBOutlet weak var tear: UIImageView!
 
+    //答案
     var answer = 0
+    
+    //機會有？？
     var times = 6
+    
+    // 上界
     var upbound = 100
+    
+    //下界
     var lowbound = 0
     
-    @IBAction func gogo(_ sender: Any) {
+    @IBAction func gogo(_ sender: Any)
+    {
+        //收鍵盤
+        putin.resignFirstResponder()
+        if putin.text == ""
+        {
+            //使用者沒輸入
+            hint.text="小狐狸正等著你給牠一個數字"
+        }
         
-        putin.resignFirstResponder() //收鍵盤
-        if putin.text == "" {
-            hint.text="小狐狸正等著你給牠一個數字" //使用者沒輸入
-        }else if Int(putin.text!) == nil {
-            hint.text="只能輸入數字喔!"  //使用者輸入的不是數字
-        }else if times > 0{
+        else if Int(putin.text!) == nil
+        {
+            //使用者輸入的不是數字
+            hint.text="只能輸入數字喔!"
+        }
+        
+        else if times > 1
+        {
+            //機會還有一次以上，檢驗輸入值，i是輸入值（整數）
             let i = Int(putin.text!)!
             check(test:i)
-        }else{
+        }
+        
+        else
+        {
+            //其他
+            time.text = "0"
             hint.text = "小狐狸哭哭 沒機會了"
             tear.isHidden = false
         }
     }
         
-    func getBoundaryText() -> String {
+    func getBoundaryText() -> String
+    {
         return "(\(lowbound)~\(upbound))"
     }
     
-    if times >  0 {
-        let i = Int(putin.text!)!
-        check(test: i)
-    }
     func check(test:Int)
     {
-        if test > 50
+        if test > 100
         {
             hint.text = "猜的數字超出範圍嚕!\(getBoundaryText())"
             times -= 1
-            time.text = String(chance)
+            time.text = String(times)
     
         }
         else if test > answer
@@ -58,7 +89,7 @@ class ViewController: UIViewController {
             upbound = test - 1
             hint.text = "沒有這麼多朵\(getBoundaryText())"
             times -= 1
-            guessTime.text = String(chance)
+            time.text = String(times)
     
         }
         else if test < answer
@@ -66,51 +97,45 @@ class ViewController: UIViewController {
             lowbound = test + 1
             hint.text = "太少朵了吧!\(getBoundaryText())"
             times -= 1
-            guessTime.text = String(chance)
+            time.text = String(times)
         }
         else
         {
             hint.text = "答對了!就是\(answer)朵 送你一朵玫瑰"
-            rose.isHidden = false
-    }
+            flower.isHidden = false
+        }
     }
 
-    @IBAction func re(_ sender: Any) {
-    
-    hint.text = "放膽去猜!!"
-    putin.text = "0"
-    times = 6
-    upbound = 50
-    lowbound = 0
-    answer = Int(arc4random_uniform(50))
-    guessTime.text = String(chance)
-    rose.isHidden = true
-    tear.isHidden = true
-    
+    @IBAction func re(_ sender: Any)
+    {
+        hint.text = "放膽去猜!!"
+        putin.text = "0"
+        times = 6
+        upbound = 50
+        lowbound = 0
+        answer = Int(arc4random_uniform(50))
+        time.text = String(times)
+        flower.isHidden = true
+        tear.isHidden = true
     }
     
     
     //按按鈕收鍵盤
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
-    inputNumber.resignFirstResponder()
-    return true
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        putin.resignFirstResponder()
+        return true
     }
     
-    
-    
-    }
-    
-    
-    
-        
-    
-    
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        answer = Int(arc4random_uniform(100))
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
